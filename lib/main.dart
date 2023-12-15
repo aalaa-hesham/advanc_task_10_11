@@ -1,4 +1,6 @@
+import 'package:advanc_task_10/pages/foget_password.dart';
 import 'package:advanc_task_10/pages/home.dart';
+import 'package:advanc_task_10/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,10 +20,6 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-          ),
           home: child,
         );
       },
@@ -45,8 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('TabBar Sample'),
           bottom: const TabBar(
+            indicatorColor: Color(0xff515C6F),
             tabs: <Widget>[
               Tab(
                 icon: Text(
@@ -54,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff515C6F),
+                    color: Color.fromARGB(255, 192, 190, 190),
                   ),
                 ),
               ),
@@ -69,7 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Tab(
-                icon: Icon(Icons.brightness_5_sharp),
+                icon: Text(
+                  "Forget password",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 192, 190, 190),
+                  ),
+                ),
               ),
             ],
           ),
@@ -77,10 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
         body: const TabBarView(
           children: <Widget>[
             Center(
-              child: Text("It's cloudy here"),
+              child: ForgetPassword(),
             ),
             Center(
-              child: Text("It's rainy here"),
+              child:Login(),
             ),
             Center(
               child: Text("It's sunny here"),
