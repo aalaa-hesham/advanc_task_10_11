@@ -1,6 +1,7 @@
 import 'package:advanc_task_10/pages/foget_password.dart';
 import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/login.dart';
+import 'package:advanc_task_10/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child:Login(),
             ),
             Center(
-              child: Text("It's sunny here"),
+              child: Signup(),
             ),
           ],
         ),

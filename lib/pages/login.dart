@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
-              vertical: 50,
+              vertical: 30,
             ),
             child: Center(
               child: Container(
@@ -80,24 +80,56 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(8),
-            height: 50,
-            width: 50,
-            child: ElevatedButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Color(0xffFF6969),
-                //padding: const EdgeInsets.all(16.0),
-                textStyle: const TextStyle(fontSize: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+          Center(
+            child: Container(
+              margin: EdgeInsets.all(3),
+              padding: EdgeInsets.all(8),
+              height: 70,
+              width: 350,
+              child: ElevatedButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xffFF6969),
+                  //padding: const EdgeInsets.all(16.0),
+                  textStyle: const TextStyle(fontSize: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
+                    ),
+                    Center(child: Text('Log In')),
+                    SizedBox(
+                      width: 100,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.arrow_right,
+                        color: Colors.red,
+                        weight: 100,
+                      ),
+                    )
+                  ],
                 ),
               ),
-              onPressed: () {},
-              child: const Text('Log In'),
             ),
           ),
+          Column(
+            children: [
+              Text(
+                "Don’t have an account? Swipe right to ",
+                style: TextStyle(color: Color(0xff515C6F), fontSize: 12),
+              ),
+              Text(
+                "create a new account.",
+                style: TextStyle(color: Color(0xffFF6969), fontSize: 12),
+              )
+            ],
+          )
         ],
       ),
     );
