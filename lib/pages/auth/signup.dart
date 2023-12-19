@@ -107,7 +107,7 @@ class _SignupState extends State<Signup> with AutomaticKeepAliveClientMixin {
                           Expanded(
                             child: TextField(
                               controller: appAuthProvider.passwordController,
-                              obscureText: true,
+                                obscureText: appAuthProvider.obscureText,
                               decoration: InputDecoration(
                                   labelText: "Password",
                                   suffixIcon: InkWell(
