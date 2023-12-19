@@ -1,12 +1,25 @@
-import 'package:advanc_task_10/pages/foget_password.dart';
+import 'package:advanc_task_10/pages/auth/foget_password.dart';
 import 'package:advanc_task_10/pages/home.dart';
-import 'package:advanc_task_10/pages/login.dart';
-import 'package:advanc_task_10/pages/signup.dart';
+import 'package:advanc_task_10/pages/auth/login.dart';
+import 'package:advanc_task_10/pages/auth/signup.dart';
+import 'package:advanc_task_10/pages/splash.dart';
+import 'package:advanc_task_10/providers/app_auth.provider.dart';
+import 'package:advanc_task_10/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => AppAuthProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +37,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const MyHomePage(),
+      child: const Splash(),
     );
   }
 }
@@ -36,60 +49,77 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
       length: 3,
+      initialIndex: 1,
       child: Scaffold(
-        appBar: AppBar(
-          bottom: const TabBar(
-            indicatorColor: Color(0xff515C6F),
-            tabs: <Widget>[
-              Tab(
-                icon: Text(
-                  "Sign Up",
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 192, 190, 190),
+        backgroundColor: ColorsUtil.badgeColor,
+        body: Column(
+          children: [
+            Padding(padding: EdgeInsets.only(top: 50)),
+            Theme(
+              data: Theme.of(context).copyWith(
+                  colorScheme: Theme.of(context)
+                      .colorScheme
+                      .copyWith(surfaceVariant: Colors.transparent)),
+              child: TabBar(
+                controller: _tabController,
+                isScrollable: false,
+                labelColor: Color.fromARGB(255, 0, 0, 0),
+                unselectedLabelColor: Colors.grey,
+                labelStyle:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
+                unselectedLabelStyle:
+                    TextStyle(fontWeight: FontWeight.w300, fontSize: 22),
+                indicatorColor: Colors.transparent,
+                tabs: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Tab(
+                      text: "Sign Up",
+                    ),
                   ),
-                ),
-              ),
-              Tab(
-                icon: Text(
-                  "Log in",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 192, 190, 190),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Tab(
+                      text: "Log in",
+                    ),
                   ),
-                ),
-              ),
-              Tab(
-                icon: Text(
-                  "Forget password",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 192, 190, 190),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Tab(
+                      text: "Forget Password",
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        body: const TabBarView(
-          children: <Widget>[
-            Center(
-              child: ForgetPassword(),
             ),
-            Center(
-              child:Login(),
-            ),
-            Center(
-              child: Signup(),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  Signup(),
+                  Login(),
+                  ForgetPassword(),
+                ],
+              ),
             ),
           ],
         ),
