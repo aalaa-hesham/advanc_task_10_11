@@ -15,7 +15,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-   StreamSubscription<User?>? _listener;
+  StreamSubscription<User?>? _listener;
   @override
   void initState() {
     checkUser();

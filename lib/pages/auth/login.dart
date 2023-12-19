@@ -143,7 +143,7 @@ class _LoginState extends State<Login> with AutomaticKeepAliveClientMixin {
                 Column(
                   children: [
                     Text(
-                      "Don’t have an account? Swipe right to ",
+                      "Don/’t have an account? Swipe right to ",
                       style: TextStyle(color: Color(0xff515C6F), fontSize: 12),
                     ),
                     InkWell(
