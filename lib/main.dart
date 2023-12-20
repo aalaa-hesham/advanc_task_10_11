@@ -3,6 +3,7 @@ import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/auth/login.dart';
 import 'package:advanc_task_10/pages/auth/signup.dart';
 import 'package:advanc_task_10/pages/splash.dart';
+import 'package:advanc_task_10/providers/ad_category.provider.dart';
 import 'package:advanc_task_10/providers/app_auth.provider.dart';
 import 'package:advanc_task_10/utils/color_utils.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
+    ChangeNotifierProvider(create: (_) => AdsProvider()),
   ], child: const MyApp()));
 }
 
