@@ -1,5 +1,8 @@
 import 'package:advanc_task_10/main.dart';
-import 'package:advanc_task_10/providers/ad_category.provider.dart';
+import 'package:advanc_task_10/providers/home.provider.dart';
+import 'package:advanc_task_10/providers/app_auth.provider.dart';
+import 'package:advanc_task_10/providers/product.provider.dart';
+import 'package:flexible_grid_view/flexible_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,35 +21,41 @@ class _HomeState extends State<Home> {
         actions: [
           Icon(Icons.keyboard_arrow_right),
           Expanded(
-            child: InkWell(
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const MyHomePage()));
-              },
-              child: Center(child: Text("your shop")),
-            ),
+            child:Center(child: Text("your shop")),
+           
           )
         ],
       ),
       body: Center(
-        child: Consumer<AdsProvider>(
-          builder: (context, adsProvider, child) {
-            if (adsProvider.ads.isEmpty) {
-              return CircularProgressIndicator();
-            } else {
-              return ListView.builder(
-                itemCount: adsProvider.ads.length,
-                itemBuilder: (context, index) {
-                  final ad = adsProvider.ads[index];
-                  final category = adsProvider.categories[index];
-                  return ListTile(
-                    title: Text(ad),
-                    subtitle: Text(category),
-                  );
-                },
-              );
-            }
-          },
+        child: Column(
+          children: [
+          
+            // Consumer<HomeProvider>(
+            //   builder: (context, adsProvider, child) {
+            // if (HomeProvider.name) {
+            //   return CircularProgressIndicator();
+            // } else {
+            //   return ListView.builder(
+            //     itemCount: adsProvider.ads.length,
+            //     itemBuilder: (context, index) {
+            //       final ad = adsProvider.ads[index];
+            //       final category = adsProvider.categories[index];
+            //       return ListTile(
+            //         title: Text(ad),
+            //         subtitle: Text(category),
+
+            //       );
+            //     },
+            //   );
+            //     }
+            //   },
+            // ),
+            ElevatedButton(
+                onPressed: () =>
+                    Provider.of<AppAuthProvider>(context, listen: false)
+                        .onLogout(context),
+                child: Text('LogOut')),
+          ],
         ),
       ),
     );

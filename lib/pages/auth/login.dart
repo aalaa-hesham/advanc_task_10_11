@@ -19,13 +19,13 @@ class _LoginState extends State<Login> with AutomaticKeepAliveClientMixin {
     super.initState();
     Provider.of<AppAuthProvider>(context, listen: false).init();
   }
-
+// dispose == Decactivate precede dispose
   @override
-  void dispose() {
+ void deactivate() {
     Provider.of<AppAuthProvider>(context, listen: false).providerDispose();
-
-    super.dispose();
+    super.deactivate();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +58,24 @@ class _LoginState extends State<Login> with AutomaticKeepAliveClientMixin {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            TextField(
+                            TextFormField(
                               controller: appAuthProvider.emailController,
+                              validator: (value) {
+                                if (value == null || value == '') {
+                                  return 'email is required';
+                                }
+                                if (!EmailValidator.validate(value)) {
+                                  return 'Enter Valid Email';
+                                } else {
+                                  if (!value
+                                      .split('@')
+                                      .last
+                                      .contains('gmail')) {
+                                    return 'Enter Valid Gmail';
+                                  }
+                                }
+                                return null;
+                              },
                               decoration: InputDecoration(
                                   labelText: "EMAIL",
                                   labelStyle: TextStyle(
@@ -73,9 +89,18 @@ class _LoginState extends State<Login> with AutomaticKeepAliveClientMixin {
                             ),
                             SizedBox(height: 12.0),
                             Expanded(
-                              child: TextField(
+                              child: TextFormField(
                                 controller: appAuthProvider.passwordController,
                                 obscureText: appAuthProvider.obscureText,
+                                validator: (value) {
+                                  if (value == null || value == '') {
+                                    return 'password is required';
+                                  }
+                                  if (value.length < 8) {
+                                    return 'Password length must be 8';
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
                                     suffixIcon: InkWell(
                                       onTap: () {

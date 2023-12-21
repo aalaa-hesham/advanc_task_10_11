@@ -1,11 +1,16 @@
+
+
 import 'dart:math';
 
+import 'package:advanc_task_10/main.dart';
 import 'package:advanc_task_10/pages/auth/signup.dart';
 import 'package:advanc_task_10/pages/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppAuthProvider extends ChangeNotifier {
   late GlobalKey<FormState> formKey;
@@ -32,34 +37,65 @@ class AppAuthProvider extends ChangeNotifier {
   Future<void> login(BuildContext context) async {
     if ((formKey.currentState?.validate() ?? false)) {
       try {
+        QuickAlert.show(context: context, type: QuickAlertType.loading);
         var credintials = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
                 email: emailController.text, password: passwordController.text);
-        if (credintials.user != null) {
-           if (context.mounted) {
-             Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => const Home()));
-            }
-        
-        } else { await QuickAlert.show(
+        if (context.mounted) {
+          Navigator.pop(context);
+          if (credintials.user != null) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => const Home()));
+          } else {
+            await QuickAlert.show(
                 context: context,
                 type: QuickAlertType.error,
-                title: 'Error In Signup');}
+                title: 'Error In Signup');
+          }
+        }
       } on FirebaseAuthException catch (e) {
+        if (!context.mounted) return;
+        Navigator.pop(context);
+
         if (e.code == 'user-not-found') {
-        } else if (e.code == 'wrong-password') {}
-      } catch (e) {}
+          await QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: 'not found');
+        } else if (e.code == 'wrong-password') {
+          await QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: 'wrong password');
+        } else {
+          await QuickAlert.show(
+              context: context, type: QuickAlertType.error, title: e.code);
+        }
+      } catch (e) {
+        if (!context.mounted) return;
+        Navigator.pop(context);
+
+        await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Login Error ${e} ');
+      }
     }
   }
 
-    Future<void> signup(BuildContext context) async {
+  Future<void> signup(BuildContext context) async {
     if ((formKey.currentState?.validate() ?? false)) {
       try {
+        QuickAlert.show(context: context, type: QuickAlertType.loading);
+
         var credintials = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: emailController.text, password: passwordController.text);
-        if (credintials.user != null) {
-             await QuickAlert.show(
+
+        if (context.mounted) {
+          Navigator.pop(context);
+          if (credintials.user != null) {
+            await QuickAlert.show(
                 context: context,
                 type: QuickAlertType.success,
                 title: 'You Signup Successfully');
@@ -68,17 +104,52 @@ class AppAuthProvider extends ChangeNotifier {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (_) => const Home()));
             }
-        } else { await QuickAlert.show(
+          } else {
+            await QuickAlert.show(
                 context: context,
                 type: QuickAlertType.error,
-                title: 'Error In Signup');}
+                title: 'Error In Signup');
+          }
+        }
       } on FirebaseAuthException catch (e) {
+        if (!context.mounted) return;
+        Navigator.pop(context);
         if (e.code == 'email-already-in-use') {
-        } else if (e.code == 'weak-password') {}
-      } catch (e) {}
+          await QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: 'This Email Already in use');
+        } else if (e.code == 'weak-password') {
+          await QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: 'Weak Password');
+        }
+      } catch (e) {
+        if (!context.mounted) return;
+        Navigator.pop(context);
+
+        await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'This signup is error ${e}');
+      }
     }
   }
-   void openSignupPage(BuildContext context) {
+
+  Future<void> onLogout(BuildContext contextEx) async {
+    QuickAlert.show(context: contextEx, type: QuickAlertType.loading);
+
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    await FirebaseAuth.instance.signOut();
+   await GetIt.I.get<SharedPreferences>().clear();
+    Navigator.pop(contextEx);
+    Navigator.pushReplacement(
+        contextEx, MaterialPageRoute(builder: (_) => const MyHomePage()));
+  }
+
+  void openSignupPage(BuildContext context) {
     if (context.mounted) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const Signup()));

@@ -8,7 +8,7 @@ class Product {
 
   Product();
 
-  Product.fromJson(Map<String, dynamic> data) {
+  Product.fromJson(Map<String, dynamic> data, String id) {
     id = data['id'];
     categoryId = data['categoryId'];
     description = data['description'];

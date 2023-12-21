@@ -3,13 +3,15 @@ import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/auth/login.dart';
 import 'package:advanc_task_10/pages/auth/signup.dart';
 import 'package:advanc_task_10/pages/splash.dart';
-import 'package:advanc_task_10/providers/ad_category.provider.dart';
+import 'package:advanc_task_10/providers/home.provider.dart';
 import 'package:advanc_task_10/providers/app_auth.provider.dart';
 import 'package:advanc_task_10/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,10 +19,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  var prefrenceInstance = await SharedPreferences.getInstance();
+  GetIt.I.registerSingleton<SharedPreferences>(prefrenceInstance);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
-    ChangeNotifierProvider(create: (_) => AdsProvider()),
+    ChangeNotifierProvider(create: (_) => HomeProvider()),
   ], child: const MyApp()));
 }
 

@@ -1,5 +1,6 @@
 import 'package:advanc_task_10/providers/app_auth.provider.dart';
 import 'package:advanc_task_10/utils/color_utils.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,22 +12,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> with AutomaticKeepAliveClientMixin {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
 
-  @override
-  void initState() {
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +45,21 @@ class _SignupState extends State<Signup> with AutomaticKeepAliveClientMixin {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            TextField(
+                            TextFormField(
                               controller: appAuthProvider.emailController,
+                              validator: (value) {
+                            if (value == null || value == '') {
+                              return 'email is required';
+                            }
+                            if (!EmailValidator.validate(value)) {
+                              return 'Enter Valid Email';
+                            } else {
+                              if (!value.split('@').last.contains('gmail')) {
+                                return 'Enter Valid Gmail';
+                              }
+                            }
+                            return null;
+                          },
                               decoration: InputDecoration(
                                   labelText: "EMAIL",
                                   labelStyle: TextStyle(
@@ -105,9 +104,18 @@ class _SignupState extends State<Signup> with AutomaticKeepAliveClientMixin {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Expanded(
-                            child: TextField(
+                            child: TextFormField(
                               controller: appAuthProvider.passwordController,
                                 obscureText: appAuthProvider.obscureText,
+                                validator: (value) {
+                            if (value == null || value == '') {
+                              return 'password required';
+                            }
+                            if (value.length < 8) {
+                              return 'Password length should be 8';
+                            }
+                            return null;
+                          },
                               decoration: InputDecoration(
                                   labelText: "Password",
                                   suffixIcon: InkWell(
