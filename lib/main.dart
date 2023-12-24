@@ -3,8 +3,10 @@ import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/auth/login.dart';
 import 'package:advanc_task_10/pages/auth/signup.dart';
 import 'package:advanc_task_10/pages/splash.dart';
+import 'package:advanc_task_10/providers/category.provider.dart';
 import 'package:advanc_task_10/providers/home.provider.dart';
 import 'package:advanc_task_10/providers/app_auth.provider.dart';
+import 'package:advanc_task_10/providers/product.provider.dart';
 import 'package:advanc_task_10/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,8 +26,10 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
-    ChangeNotifierProvider(create: (_) => HomeProvider()),
-  ], child: const MyApp()));
+    Provider(create: (_) => CategoryProvider()),
+    Provider(create: (_) => ProductProvider()),
+    ChangeNotifierProvider(create: (_) => HomeProvider())
+  ],child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
