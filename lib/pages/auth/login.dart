@@ -19,13 +19,13 @@ class _LoginState extends State<Login> with AutomaticKeepAliveClientMixin {
     super.initState();
     Provider.of<AppAuthProvider>(context, listen: false).init();
   }
-// dispose == Decactivate precede dispose
+
+// dispose before Decactivate precede dispose
   @override
- void deactivate() {
+  void deactivate() {
     Provider.of<AppAuthProvider>(context, listen: false).providerDispose();
     super.deactivate();
   }
-
 
   @override
   Widget build(BuildContext context) {

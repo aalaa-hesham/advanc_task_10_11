@@ -1,4 +1,5 @@
 import 'package:advanc_task_10/main.dart';
+import 'package:advanc_task_10/pages/product.details.dart';
 import 'package:advanc_task_10/providers/ads.provider.dart';
 import 'package:advanc_task_10/providers/category.provider.dart';
 import 'package:advanc_task_10/providers/home.provider.dart';
@@ -27,20 +28,20 @@ class _HomeState extends State<Home> {
         actions: [
           Icon(Icons.keyboard_arrow_right),
           Expanded(
-            child:Center(child: Text("your shop")),
-           
+            child: Center(child: Text("your shop")),
           )
         ],
       ),
       body: Center(
         child: Column(
           children: [
-          Consumer<CategoryProvider>(
+            Consumer<CategoryProvider>(
               builder: (__, caegoryProvider, _) {
                 return FutureBuilder(
                     future: caegoryProvider.getCategories(context, limit: 3),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
@@ -60,20 +61,20 @@ class _HomeState extends State<Home> {
                     });
               },
             ),
-     const SizedBox(
+            const SizedBox(
               height: 20,
             ),
-
             const HeadlineWidget(title: 'Latest'),
             const SizedBox(
               height: 10,
             ),
-              Consumer<adsProvider>(
+            Consumer<adsProvider>(
               builder: (__, adProvider, _) {
                 return FutureBuilder(
                     future: adProvider.getads(context, limit: 3),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
@@ -81,43 +82,8 @@ class _HomeState extends State<Home> {
                           return Text('Error While Get Data');
                         } else if (snapshot.hasData) {
                           return CarouselSliderEx(
-                          adsList: snapshot.data ?? [],
-                          onBtnPressed: () {},
-                        );
-                        } else {
-                          return Text('No Data Found');
-                        }
-                      } else {
-                        return Text(
-                            'Connection Statue ${snapshot.connectionState}');
-                      }
-                    });
-              },
-            ),
-
-            const HeadlineWidget(title: 'Products'),
-            const SizedBox(
-              height: 10,
-            ),
-            Consumer<ProductProvider>(
-              builder: (__, productProvider, _) {
-                return FutureBuilder(
-                    future: productProvider.getProducts(context, limit: 3),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return Text('Error While Get Data');
-                        } else if (snapshot.hasData) {
-                          return FlexibleGridView(
-                            axisCount: GridLayoutEnum.threeElementsInRow,
-                            shrinkWrap: true,
-                            children: snapshot.data
-                                    ?.map((e) => ProductWidget(product: e))
-                                    .toList() ??
-                                [],
+                            adsList: snapshot.data ?? [],
+                            onBtnPressed: () {},
                           );
                         } else {
                           return Text('No Data Found');
@@ -129,12 +95,55 @@ class _HomeState extends State<Home> {
                     });
               },
             ),
-       
-            ElevatedButton(
-                onPressed: () =>
-                    Provider.of<AppAuthProvider>(context, listen: false)
-                        .onLogout(context),
-                child: Text('LogOut')),
+            const HeadlineWidget(title: 'Products'),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+                onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const Details();
+                    }));},
+              child: Consumer<ProductProvider>(
+                builder: (__, productProvider, _) {
+                  return FutureBuilder(
+                      future: productProvider.getProducts(context, limit: 3),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.done) {
+                          if (snapshot.hasError) {
+                            return Text('Error While Get Data');
+                          } else if (snapshot.hasData) {
+                            return FlexibleGridView(
+                              axisCount: GridLayoutEnum.threeElementsInRow,
+                              shrinkWrap: true,
+                              children: snapshot.data
+                                      ?.map((e) => ProductWidget(product: e))
+                                      .toList() ??
+                                  [],
+                            );
+                          } else {
+                            return Text('No Data Found');
+                          }
+                        } else {
+                          return Text(
+                              'Connection Statue ${snapshot.connectionState}');
+                        }
+                      });
+                },
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                  onPressed: () =>
+                      Provider.of<AppAuthProvider>(context, listen: false)
+                          .onLogout(context),
+                  child: Text('LogOut')),
+            ),
           ],
         ),
       ),

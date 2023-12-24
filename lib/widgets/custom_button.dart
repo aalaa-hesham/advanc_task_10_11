@@ -13,7 +13,6 @@ class CustomButton extends StatelessWidget {
       onPressed: onBtnPressed,
       style: ElevatedButton.styleFrom(
         shape: const StadiumBorder(),
-        //elevation: 20,
         backgroundColor: Colors.white,
         shadowColor: Theme.of(context).primaryColor,
         fixedSize: const Size(200, 50),
@@ -21,8 +20,8 @@ class CustomButton extends StatelessWidget {
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
           text,
+          style: TextStyle(color: Colors.black),
         ),
-        // Spacer(),
         Container(
           width: 30,
           height: 30,

@@ -58,7 +58,7 @@ class _CarouselSliderExState extends State<CarouselSliderEx> {
           activeIndex: index,
           count: widget.adsList.length,
           effect: const ExpandingDotsEffect(
-            activeDotColor: Colors.orange,
+            activeDotColor: Colors.brown,
           ),
         ),
       ],
