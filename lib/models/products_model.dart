@@ -37,7 +37,6 @@ class Product {
     quantity = data['quantity'];
     createdAt = DateTime.fromMillisecondsSinceEpoch(
         data['createdAt'].millisecondsSinceEpoch);
-    // variants = data['variants'];
   }
 
   Map<String, dynamic> toJson() {

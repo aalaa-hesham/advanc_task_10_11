@@ -22,6 +22,7 @@ class CategoryData {
         ? List<int>.from(json['colors'].map((e) => e))
         : null;
 
+// if it can't equal null
     createdAt = json['createdAt'] != null
         ? DateTime.fromMillisecondsSinceEpoch(
             json['createdAt'].millisecondsSinceEpoch)

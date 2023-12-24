@@ -15,6 +15,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
+import 'providers/ads.provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
     Provider(create: (_) => CategoryProvider()),
     Provider(create: (_) => ProductProvider()),
+     Provider(create: (_) => adsProvider()),
     ChangeNotifierProvider(create: (_) => HomeProvider())
   ],child: const MyApp()));
 }
