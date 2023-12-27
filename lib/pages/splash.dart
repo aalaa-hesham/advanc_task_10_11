@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:advanc_task_10/main.dart';
 import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/auth/login.dart';
+import 'package:advanc_task_10/pages/master_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -30,7 +31,7 @@ class _SplashState extends State<Splash> {
             context, MaterialPageRoute(builder: (_) => const MyHomePage()));
       } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Home()));
+            context, MaterialPageRoute(builder: (_) => const MasterPage()));
       }
     });
   }
