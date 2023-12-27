@@ -3,6 +3,7 @@ import 'package:advanc_task_10/pages/home.dart';
 import 'package:advanc_task_10/pages/auth/login.dart';
 import 'package:advanc_task_10/pages/auth/signup.dart';
 import 'package:advanc_task_10/pages/splash.dart';
+import 'package:advanc_task_10/providers/cart.provider.dart';
 import 'package:advanc_task_10/providers/category.provider.dart';
 import 'package:advanc_task_10/providers/home.provider.dart';
 import 'package:advanc_task_10/providers/app_auth.provider.dart';
@@ -27,6 +28,7 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
+      Provider(create: (_) => CartProvider()),
     Provider(create: (_) => CategoryProvider()),
     Provider(create: (_) => ProductProvider()),
      Provider(create: (_) => adsProvider()),

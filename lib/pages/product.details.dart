@@ -1,472 +1,233 @@
+import 'package:advanc_task_10/models/products_model.dart';
+import 'package:advanc_task_10/providers/cart.provider.dart';
+import 'package:advanc_task_10/widgets/button_icon.widget.dart';
+import 'package:advanc_task_10/widgets/icon_badge.widget.dart';
+import 'package:advanc_task_10/widgets/selected_color.dart';
+import 'package:advanc_task_10/widgets/selected_size.widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
-class Details extends StatefulWidget {
-  const Details({super.key});
+class ProductDetailsPage extends StatefulWidget {
+  final Product product;
+  const ProductDetailsPage({required this.product, super.key});
 
   @override
-  State<Details> createState() => _DetailsState();
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
-class _DetailsState extends State<Details> {
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  @override
+  void initState() {
+    Provider.of<CartProvider>(context, listen: false).createItemInstance();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+      backgroundColor: Color(0xffF5F6F8),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+              color: Color(0xffff6969), size: 18),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                widget.product.name ?? 'No Name',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                  color: Color(0xff515c6f),
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '\$${widget.product.price}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff515c6f),
+                    ),
+                  ),
+                  Container(
+                    width: 42,
+                    height: 19,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xffff6969),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.star,
+                          size: 12,
+                          color: Color(0xffffffff),
+                        ),
+                        Text(
+                          '4.9',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        actions: [CartBadgeWidget()],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.red,
-                        )),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  const Center(
-                    child: Text(
-                      " your favourite skate shoe",
-                      style: TextStyle(fontSize: 22),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon:
-                            const Icon(Icons.shopping_cart_checkout_outlined)),
-                  ),
-                ],
-              ),
-            ),
-            const Center(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                  ),
-                  Text(
-                    " \$49.453",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    " 4.9 %",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        backgroundColor: Colors.red,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: Image.network(
-                "https://m.media-amazon.com/images/I/61pwlViA13L._AC_SX679_.jpg",
-                width: 300,
-                height: 300,
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 70,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "product",
-                            style: TextStyle(fontSize: 15, color: Colors.red),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "Details",
-                          style: TextStyle(fontSize: 15, color: Colors.black),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      Text(
-                        "Reviews",
-                        style: TextStyle(fontSize: 15, color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 400.0, top: 0.0),
-                  child: Text(
-                    "SELECT COLOR",
-                    style: TextStyle(color: Color.fromARGB(255, 103, 98, 98)),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+  
+            Expanded(
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
                   children: [
-                    Material(
-                      elevation: 5,
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.pink.shade400,
-                        child: const Icon(
-                          Icons.texture_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    CachedNetworkImage(
+                        imageUrl: widget.product.image!,
+                        height: 300,
+                        width: double.infinity,
+                        fit: BoxFit.fitHeight,
+                        errorWidget: (context, url, error) => const Center(
+                              child: Icon(Icons.error),
+                            ),
+                        progressIndicatorBuilder: (_, __, progress) => Padding(
+                              padding: const EdgeInsets.all(100.0),
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            )),
                     const SizedBox(
-                      width: 40,
+                      height: 15,
                     ),
-                    Material(
-                      elevation: 5,
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.orange.shade600,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Material(
-                      elevation: 5,
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.blue.shade600,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    const Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    const Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    const Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.black,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ...(widget.product.variants?.entries
+                                  .toList()
+                                  .map((e) {
+                                return Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 11),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          'SELECT ${e.key.toUpperCase()}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                              color: Color(0xff515c6f)
+                                                  .withOpacity(0.502),
+                                              letterSpacing: 1),
+                                        ),
+                                      ),
+                                    ),
+                                    if (e.key == 'color')
+                                      SelectedColor(
+                                        colors: List<int>.from(e.value),
+                                        selectedColorCallBack: (color) {
+                                          Provider.of<CartProvider>(context,
+                                                  listen: false)
+                                              .cartItem
+                                              ?.selectedVarints ??= {};
+
+                                          Provider.of<CartProvider>(context,
+                                                      listen: false)
+                                                  .cartItem
+                                                  ?.selectedVarints?[e.key] =
+                                              color.value;
+                                        },
+                                      )
+                                    else
+                                      SelectedSize(
+                                        selectedValueCallBack: (value) {
+                                          Provider.of<CartProvider>(context,
+                                                  listen: false)
+                                              .cartItem
+                                              ?.selectedVarints ??= {};
+
+                                          Provider.of<CartProvider>(context,
+                                                  listen: false)
+                                              .cartItem
+                                              ?.selectedVarints?[e.key] = value;
+                                        },
+                                        values: List<dynamic>.from(e.value),
+                                      ),
+                                  ],
+                                );
+                              }) ??
+                              [SizedBox.fromSize()]),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+
             Row(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 400.0, top: 0),
-                  child: Text(
-                    "SELECT SIZE (US)",
-                    style: TextStyle(color: Color.fromARGB(255, 103, 98, 98)),
+                ButtonIconWidget(
+                  txt: 'SHARE THIS',
+                  con: Icons.arrow_upward_outlined,
+                  clcon: Color(0xffffffff),
+                  clcont: Color(0xff727c8e),
+                  cltxt: Color(0xff727c8e),
+                  backcl: Color(0xffffffff),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    Provider.of<CartProvider>(context, listen: false)
+                        .cartItem
+                        ?.productId = widget.product.id;
+                    Provider.of<CartProvider>(context, listen: false)
+                        .cartItem
+                        ?.quantity = 1;
+                    Provider.of<CartProvider>(context, listen: false)
+                        .cartItem
+                        ?.itemId = Uuid().v4();
+                    Provider.of<CartProvider>(context, listen: false)
+                        .onAddItemToCart(context: context);
+                  },
+                  child: ButtonIconWidget(
+                    txt: 'ADD TO CART',
+                    con: Icons.arrow_forward_ios_outlined,
+                    clcon: Color(0xffff6969),
+                    clcont: Color(0xffffffff),
+                    cltxt: Color(0xffffffff),
+                    backcl: Color(0xffff6969),
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.red),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    Container(
-                      width: 70,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(20, 10)),
-                        color: Colors.white,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            "4.5",
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 150,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      color: Colors.white,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Text("SHARE THIS"),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            CircleAvatar(
-                                backgroundColor: Color.fromARGB(31, 11, 11, 11),
-                                child: Icon(
-                                  Icons.arrow_upward_outlined,
-                                  color: Colors.white,
-                                  size: 12,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 100,
-                  ),
-                  Container(
-                    width: 150,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      color: Colors.red,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Flexible(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "ADD TO CART",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios_sharp,
-                                      color: Colors.red,
-                                      size: 12,
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

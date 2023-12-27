@@ -2,7 +2,7 @@ import 'package:advanc_task_10/models/products_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({super.key, required this.product});
+  const ProductWidget({super.key, required this.product, required Null Function() onTap});
   final Product product;
   @override
   Widget build(BuildContext context) {

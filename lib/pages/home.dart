@@ -99,43 +99,46 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 10,
             ),
-            InkWell(
-                onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return const Details();
-                    }));},
-              child: Consumer<ProductProvider>(
-                builder: (__, productProvider, _) {
-                  return FutureBuilder(
-                      future: productProvider.getProducts(context, limit: 3),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          if (snapshot.hasError) {
-                            return Text('Error While Get Data');
-                          } else if (snapshot.hasData) {
-                            return FlexibleGridView(
-                              axisCount: GridLayoutEnum.threeElementsInRow,
-                              shrinkWrap: true,
-                              children: snapshot.data
-                                      ?.map((e) => ProductWidget(product: e))
-                                      .toList() ??
-                                  [],
-                            );
-                          } else {
-                            return Text('No Data Found');
-                          }
+        Consumer<ProductProvider>(
+              builder: (__, productProvider, _) {
+                return FutureBuilder(
+                    future: productProvider.getProducts(context, limit: 3),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Text('Error While Get Data');
+                        } else if (snapshot.hasData) {
+                          return FlexibleGridView(
+                            axisCount: GridLayoutEnum.threeElementsInRow,
+                            shrinkWrap: true,
+                            children: snapshot.data
+                                    ?.map((e) => ProductWidget(
+                                          product: e,
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        ProductDetailsPage(
+                                                          product: e,
+                                                        )));
+                                          },
+                                        ))
+                                    .toList() ??
+                                [],
+                          );
                         } else {
-                          return Text(
-                              'Connection Statue ${snapshot.connectionState}');
+                          return Text('No Data Found');
                         }
-                      });
-                },
-              ),
+                      } else {
+                        return Text(
+                            'Connection Statue ${snapshot.connectionState}');
+                      }
+                    });
+              },
             ),
             Expanded(
               child: ElevatedButton(
